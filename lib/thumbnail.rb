@@ -31,9 +31,10 @@ module Thumbnail
       defaults = { :method => 'cut_to_fit', :gravity => 'center', :cmd => 'convert', :smush => false }
       config = Hashr.new(options, defaults)
       method = config[:method]
-      raise_unknown_method(method) unless Methods.respond_to?(method)  
+      raise_unknown_method(method) unless Methods.respond_to?(method)
       parameters = Methods.send(method, config)
-      cmd = %Q{#{config.cmd} "#{config.in}" #{parameters} "#{make_path(config.out)}"}
+      #cmd = %Q{#{config.cmd} "#{config.in}" #{parameters} "#{make_path(config.out)}"}
+      cmd = %Q{#{config.cmd} "#{config.in}" #{parameters} "jpg:-"}
       status, stdout = execute(cmd)
       Smusher.optimize_image(config.out) if config.smush
       config.out
